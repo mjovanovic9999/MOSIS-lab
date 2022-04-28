@@ -13,6 +13,7 @@ class MainActivity : AppCompatActivity() {
         val finishButton: Button=findViewById(R.id.finish_button)
         finishButton.setOnClickListener { finish() }
 
+        Toast.makeText(this, "onCreate", Toast.LENGTH_SHORT).show()
     }
 
     override fun onStart() {
