@@ -1,6 +1,8 @@
 package elfak.mosis.myplaces
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.*
 import android.widget.Button
 import android.widget.EditText
@@ -49,13 +51,40 @@ class EditFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val editName: EditText = requireView().findViewById<EditText>(R.id.editmyplace_name_edit)
+        val editDesc :EditText=requireView().findViewById<EditText>(R.id.editmyplace_desc_edit)
+        if (myPlacesViewModel.selected!=null){
+            editName.setText(myPlacesViewModel.selected?.name)
+            editDesc.setText(myPlacesViewModel.selected?.descripiton)
+        }
         val addButton:Button = requireView().findViewById<Button>(R.id.editmyplace_finished_button)
-        addButton.setOnClickListener{
-            val editName: EditText = requireView().findViewById<EditText>(R.id.editmyplace_name_edit)
-            val name: String =editName.text.toString()
+        addButton.isEnabled = false
+        if (myPlacesViewModel.selected!=null){
+            addButton.setText(R.string.editmyplace_save_label)
+        }
+        editName.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                addButton.isEnabled=(editName.text.length > 0)
+            }
 
-            val editDesc :EditText=requireView().findViewById<EditText>(R.id.editmyplace_desc_edit)
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+
+            }
+        })
+        addButton.setOnClickListener{
+            val name:String=editName.text.toString()
+            val editName: EditText = requireView().findViewById<EditText>(R.id.editmyplace_name_edit)
             val desc: String=editDesc.text.toString()
+            if (myPlacesViewModel.selected!=null){
+                myPlacesViewModel.selected?.name = name
+                myPlacesViewModel.selected?.descripiton = desc
+            }
+            else
+                myPlacesViewModel.addPlace(MyPlace(name, desc))
             myPlacesViewModel.addPlace(MyPlace(name,desc))
             findNavController().navigate(R.id.action_EditFragment_to_ListFragment)
         }
@@ -63,5 +92,10 @@ class EditFragment : Fragment() {
         cancelButton.setOnClickListener{
             findNavController().navigate(R.id.action_EditFragment_to_ListFragment)
         }
+    }
 
-    }}
+    override fun onDestroyView() {
+        super.onDestroyView()
+        myPlacesViewModel.selected = null
+    }
+}
