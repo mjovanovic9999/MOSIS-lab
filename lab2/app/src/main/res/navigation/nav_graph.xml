@@ -47,7 +47,7 @@
     <fragment
         android:id="@+id/ViewFragment"
         android:name="elfak.mosis.myplaces.ViewFragment"
-        android:label="View My Place:"
+        android:label="View My Place"
         tools:layout="@layout/fragment_view">
         <action
             android:id="@+id/action_ViewFragment_to_ListFragment"

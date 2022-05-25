@@ -31,15 +31,15 @@ class MainActivity : AppCompatActivity() {
         appBarConfiguration = AppBarConfiguration(navController.graph)
         setupActionBarWithNavController(navController, appBarConfiguration)
 
-        navController.addOnDestinationChangedListener{controller, destination, arguments ->
+        navController.addOnDestinationChangedListener{ _, destination, _ ->
             if (destination.id == R.id.EditFragment || destination.id == R.id.ViewFragment)
                 binding.fab.hide()
             else
                 binding.fab.show()
         }
 
-        binding.fab.setOnClickListener { view ->
-           if (navController.currentDestination?.id == R.id.HomeFragment)
+        binding.fab.setOnClickListener {
+            if (navController.currentDestination?.id == R.id.HomeFragment)
                navController.navigate(R.id.action_HomeFragment_to_EditFragment)
             else if (navController.currentDestination?.id == R.id.ListFragment)
                 navController.navigate(R.id.action_ListFragment_to_EditFragment)

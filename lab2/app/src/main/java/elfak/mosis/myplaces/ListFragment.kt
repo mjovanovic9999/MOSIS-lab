@@ -47,23 +47,19 @@ class ListFragment : Fragment() {
             view.context,
             android.R.layout.simple_list_item_1, android.R.id.text1, myPlacesViewModel.myPlacesList)
 
-        myPLacesList.setOnItemClickListener(object :AdapterView.OnItemClickListener{
-            override fun onItemClick(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-                var myPlace: MyPlace = p0?.adapter?.getItem(p2) as MyPlace
-                myPlacesViewModel.selected = myPlace
-                view.findNavController().navigate(R.id.action_ListFragment_to_ViewFragment)
-            }
-        })
-        myPLacesList.setOnCreateContextMenuListener(object: View.OnCreateContextMenuListener {
-            override fun onCreateContextMenu(menu: ContextMenu, v: View?, menuInfo: ContextMenu.ContextMenuInfo) {
-                val info = menuInfo as AdapterView.AdapterContextMenuInfo
-                val myPlace: MyPlace = myPlacesViewModel.myPlacesList[info.position]
-                menu.setHeaderTitle(myPlace.name)
-                menu.add(0,1,1,"View place")
-                menu.add(0,2,2,"Edit place")
-                menu.add(0,3,3,"Delete place")
-            }
-        })
+        myPLacesList.setOnItemClickListener { p0, _, p2, _ ->
+            var myPlace: MyPlace = p0?.adapter?.getItem(p2) as MyPlace
+            myPlacesViewModel.selected = myPlace
+            view.findNavController().navigate(R.id.action_ListFragment_to_ViewFragment)
+        }
+        myPLacesList.setOnCreateContextMenuListener { menu, _, menuInfo ->
+            val info = menuInfo as AdapterView.AdapterContextMenuInfo
+            val myPlace: MyPlace = myPlacesViewModel.myPlacesList[info.position]
+            menu.setHeaderTitle(myPlace.name)
+            menu.add(0, 1, 1, "View place")
+            menu.add(0, 2, 2, "Edit place")
+            menu.add(0, 3, 3, "Delete place")
+        }
     }
 
     override fun onContextItemSelected(item: MenuItem): Boolean {

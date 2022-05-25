@@ -23,7 +23,6 @@ class ViewFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_view, container, false)
         _binding = FragmentViewBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -34,9 +33,8 @@ class ViewFragment : Fragment() {
         binding.viewmyplaceDescText.text=myPlacesViewModel.selected?.descripiton
         binding.viewmyplaceFinishedButton.setOnClickListener{
             myPlacesViewModel.selected=null
-            findNavController().navigate(R.id.action_EditFragment_to_ListFragment)
+            findNavController().navigate(R.id.action_ViewFragment_to_ListFragment)
         }
-        myPlacesViewModel.selected=null
     }
 
     override fun onDestroyView() {
